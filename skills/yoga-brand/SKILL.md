@@ -1,17 +1,113 @@
-<html>
-<body>
-<!--StartFragment--><html><head></head><body><div><hr></div><h1><span>Senda Yoga — Brand Design Skill</span></h1><h2><span>1. Purpose</span></h2><p><span>This skill defines the visual identity and interface design system for Senda Yoga, a digital management application for a small yoga studio.</span></p><p><span>The interface must combine:</span></p><ul><li><p><span>The warm and natural color palette of Tierra Serena.</span></p></li><li><p><span>The clean, lowercase contemporary logotype of Equilibrio Moderno.</span></p></li><li><p><span>The editorial typography and expressive composition of Esencia Artesanal.</span></p></li></ul><p><span>The intended result is a boutique, contemporary yoga experience that is warm, recognizable, and operationally efficient.</span></p><p><span>Use this skill when creating or modifying any user-facing interface.</span></p><p><span>This skill must not override application business rules, permissions, or feature specifications.</span></p><h2><span>2. Brand identity</span></h2><h3><span>Personality</span></h3><p><span>The brand must communicate:</span></p><ul><li><p><span>Calmness without visual emptiness.</span></p></li><li><p><span>Warmth without excessive decoration.</span></p></li><li><p><span>Elegance without formality.</span></p></li><li><p><span>Trust and precision when displaying balances and attendance records.</span></p></li><li><p><span>Contemporary simplicity with subtle artisanal details.</span></p></li></ul><p><span>Avoid conventional fitness-dashboard aesthetics, excessive green surfaces, generic gradient backgrounds, and decorative elements that interfere with usability.</span></p><h3><span>Logotype</span></h3><p><span>The wordmark must display:</span></p><ul><li><p><span>"senda" in lowercase.</span></p></li><li><p><span>A clean, contemporary sans-serif style.</span></p></li><li><p><span>A small secondary line reading "YOGA STUDIO".</span></p></li><li><p><span>Generous letter spacing in the secondary line.</span></p></li></ul><p><span>The wordmark should be visually independent from the application's editorial heading typography.</span></p><p><span>Do not replace the wordmark with a script or handwritten typeface.</span></p><p><span>If no official logo asset is available, use a typographic approximation rather than inventing an unrelated symbol.</span></p><h2><span>3. Color system</span></h2><p><span>Define reusable design tokens.</span></p>
-Token | Hex | Intended use
--- | -- | --
---color-background | #F8F4EE | Main application background
---color-surface | #FFFDFC | Cards, panels, modal surfaces
---color-sage | #A7B89F | Soft supporting accents
---color-terracotta | #C97F63 | Brand accents, progress indicators
---color-mocha | #7A5E4D | Warm supporting elements
---color-charcoal | #2E2E2B | Main text, strong contrast
---color-border | #E8DED2 | Dividers and card borders
---color-muted | #6B6863 | Secondary information
+---
+name: yoga-brand
+description: Apply Senda Yoga's warm, editorial, contemporary brand identity when designing or changing user-facing interfaces, components, layouts, and interaction states.
+---
 
-<h3><span>Color application</span></h3><ul><li><p><span>Warm ivory must be the dominant background.</span></p></li><li><p><span>White-warm surfaces should separate important content.</span></p></li><li><p><span>Charcoal should carry most functional text.</span></p></li><li><p><span>Terracotta should emphasize progress and brand identity.</span></p></li><li><p><span>Sage should be used for subtle supportive information.</span></p></li><li><p><span>Mocha may be used for selected secondary visual elements.</span></p></li></ul><p><span>Avoid filling entire screens with sage or terracotta.</span></p><h3><span>Accessible contrast</span></h3><p><span>The terracotta brand color must not automatically be used with white text.</span></p><p><span>For primary actions, use a sufficiently dark terracotta variant or another verified high-contrast combination.</span></p><p><span>Maintain WCAG 2.2 AA contrast requirements where applicable.</span></p><p><span>Use distinct semantic styling for success, warning, and error states. Never communicate status by color alone.</span></p><h2><span>4. Typography</span></h2><h3><span>Editorial headings</span></h3><p><span>Use </span><strong><span>Playfair Display</span></strong><span> for:</span></p><ul><li><p><span>Main dashboard greetings.</span></p></li><li><p><span>Large page titles.</span></p></li><li><p><span>Editorial section headings.</span></p></li><li><p><span>Selected welcome messages.</span></p></li></ul><p><span>Suggested desktop hierarchy:</span></p><ul><li><p><span>H1: 36 px, weight 500–600.</span></p></li><li><p><span>H2: 28 px, weight 500–600.</span></p></li><li><p><span>H3: 22 px, weight 500–600.</span></p></li></ul><p><span>Scale headings appropriately on smaller screens.</span></p><h3><span>Functional interface</span></h3><p><span>Use </span><strong><span>Lato</span></strong><span> for:</span></p><ul><li><p><span>Body text.</span></p></li><li><p><span>Form labels.</span></p></li><li><p><span>Buttons.</span></p></li><li><p><span>Navigation.</span></p></li><li><p><span>Tables.</span></p></li><li><p><span>Package information.</span></p></li><li><p><span>Attendance records.</span></p></li><li><p><span>System messages.</span></p></li></ul><p><span>Recommended sizes:</span></p><ul><li><p><span>Body: 16 px.</span></p></li><li><p><span>Secondary text: 14 px.</span></p></li><li><p><span>Labels: 14 px.</span></p></li><li><p><span>Buttons: 15–16 px.</span></p></li><li><p><span>Small supporting information: 12–13 px where readable.</span></p></li></ul><p><span>Use tabular numerals for package balances, counts, and other numerical data when supported.</span></p><p><span>Do not use decorative typography for operational controls.</span></p><h2><span>5. Layout system</span></h2><p><span>Design mobile-first.</span></p><h3><span>Spacing</span></h3><p><span>Use a consistent 8 px-based spacing system.</span></p><p><span>Recommended values:</span></p><ul><li><p><span>Small spacing: 8 px.</span></p></li><li><p><span>Standard spacing: 16 px.</span></p></li><li><p><span>Card padding: 20–24 px.</span></p></li><li><p><span>Section spacing: 24–32 px.</span></p></li><li><p><span>Large editorial separation: 40–48 px.</span></p></li></ul><p><span>Prefer visual breathing room over dense dashboards.</span></p><h3><span>Composition</span></h3><p><span>Use the editorial, slightly asymmetric composition of Esencia Artesanal while preserving clear alignment for operational information.</span></p><p><span>Combine:</span></p><ul><li><p><span>Generous whitespace.</span></p></li><li><p><span>Soft cards.</span></p></li><li><p><span>Distinct editorial headings.</span></p></li><li><p><span>Limited botanical illustration.</span></p></li><li><p><span>Clear functional grouping.</span></p></li></ul><p><span>On mobile, arrange essential information vertically.</span></p><p><span>On desktop, allow wider layouts and multiple columns without excessively stretching individual content sections.</span></p><h3><span>Navigation</span></h3><p><span>For student-facing mobile screens, use a simple bottom navigation with clearly labeled destinations.</span></p><p><span>Only show destinations that are implemented and functional.</span></p><p><span>For administrator and instructor interfaces, prioritize practical navigation appropriate to their tasks.</span></p><h2><span>6. Buttons and interactive controls</span></h2><h3><span>Primary button</span></h3><p><span>Use:</span></p><ul><li><p><span>Warm terracotta visual identity.</span></p></li><li><p><span>A contrast-compliant text/background pairing.</span></p></li><li><p><span>Rounded corners, approximately 14–18 px.</span></p></li><li><p><span>Minimum comfortable touch target of 44 × 44 CSS px.</span></p></li><li><p><span>Medium-weight Lato text.</span></p></li><li><p><span>Minimal shadow or no shadow.</span></p></li></ul><p><span>Typical actions:</span></p><ul><li><p><span>"Registrar asistencia"</span></p></li><li><p><span>"Confirmar"</span></p></li><li><p><span>"Ver mi historial"</span></p></li></ul><p><span>For high-frequency operational actions, prioritize precision and clarity over decorative effects.</span></p><h3><span>Secondary button</span></h3><p><span>Use:</span></p><ul><li><p><span>Transparent or warm-white background.</span></p></li><li><p><span>Fine border in mocha or charcoal.</span></p></li><li><p><span>Dark text.</span></p></li><li><p><span>The same corner-radius system as primary buttons.</span></p></li></ul><h3><span>Tertiary action</span></h3><p><span>Use text-based controls for secondary, low-emphasis actions.</span></p><p><span>Provide visible hover, keyboard focus, loading, disabled, and active states.</span></p><p><span>Do not use irregular brush-stroke buttons for critical operations.</span></p><h2><span>7. Card design</span></h2><p><span>Cards should use:</span></p><ul><li><p><span>Warm-white surfaces.</span></p></li><li><p><span>Subtle borders.</span></p></li><li><p><span>Rounded corners between 16 and 24 px.</span></p></li><li><p><span>Very soft shadows only when needed.</span></p></li><li><p><span>Consistent internal padding.</span></p></li></ul><p><span>Cards containing package balances must prioritize numeric information.</span></p><h3><span>Package card</span></h3><p><span>Display:</span></p><ol start="1"><li><p><span>Package identification.</span></p></li><li><p><span>Initial class quantity.</span></p></li><li><p><span>Remaining class quantity.</span></p></li><li><p><span>Visual progress indicator.</span></p></li><li><p><span>Access to relevant attendance history.</span></p></li></ol><p><span>The numeric balance must remain readable without relying on the progress indicator.</span></p><h2><span>8. Signature visual elements</span></h2><h3><span>Botanical illustrations</span></h3><p><span>Use subtle line-art botanical motifs inspired by organic shapes and artisanal illustration.</span></p><p><span>Appropriate placements:</span></p><ul><li><p><span>Welcome screens.</span></p></li><li><p><span>Empty states.</span></p></li><li><p><span>Selected editorial headers.</span></p></li><li><p><span>Corners of noncritical information cards.</span></p></li></ul><p><span>Avoid placing illustrations behind balances, forms, or confirmation buttons.</span></p><h3><span>Progress indicators</span></h3><p><span>Use circular or segmented progress indicators.</span></p><ul><li><p><span>Display the remaining class count numerically.</span></p></li><li><p><span>Use terracotta as the main visual accent.</span></p></li><li><p><span>Provide a text label explaining the progress.</span></p></li><li><p><span>Support packages with quantities other than 10.</span></p></li></ul><p><span>Do not assume all packages contain exactly 10 classes.</span></p><h3><span>Organic composition</span></h3><p><span>Use carefully controlled organic shapes and minor asymmetry only in decorative sections.</span></p><p><span>Operational data, forms, lists, and buttons should preserve consistent alignment.</span></p><h2><span>9. Screen-specific guidelines</span></h2><h3><span>Student dashboard</span></h3><p><span>Prioritize:</span></p><ol start="1"><li><p><span>A personalized greeting.</span></p></li><li><p><span>Total available class balance.</span></p></li><li><p><span>Individual package information.</span></p></li><li><p><span>Attendance history access.</span></p></li></ol><p><span>Use an editorial heading followed by a visually prominent balance card.</span></p><h3><span>Instructor dashboard</span></h3><p><span>Prioritize:</span></p><ol start="1"><li><p><span>The selected or active class session.</span></p></li><li><p><span>Searchable student list.</span></p></li><li><p><span>Student's available balance.</span></p></li><li><p><span>Attendance confirmation.</span></p></li><li><p><span>Clear confirmation or error feedback.</span></p></li></ol><p><span>The attendance workflow must remain fast and understandable.</span></p><h3><span>Administrator interface</span></h3><p><span>Prioritize:</span></p><ol start="1"><li><p><span>Package and student management.</span></p></li><li><p><span>Session management.</span></p></li><li><p><span>Attendance history.</span></p></li><li><p><span>Authorized corrections.</span></p></li></ol><p><span>Administrative interfaces may be denser than student screens but must retain the same visual identity.</span></p><h2><span>10. Interface language and tone</span></h2><p><span>All user-facing text must be in Spanish.</span></p><p><span>Use concise, warm, and precise wording.</span></p><p><span>Preferred examples:</span></p><ul><li><p><span>"Hola, Mariana"</span></p></li><li><p><span>"8 clases disponibles"</span></p></li><li><p><span>"Registrar asistencia"</span></p></li><li><p><span>"Asistencia confirmada"</span></p></li><li><p><span>"No hay clases disponibles"</span></p></li><li><p><span>"Este registro fue corregido"</span></p></li></ul><p><span>Avoid:</span></p><ul><li><p><span>Excessive enthusiasm or exclamation marks.</span></p></li><li><p><span>Unnecessary technical terminology.</span></p></li><li><p><span>Ambiguous confirmation messages.</span></p></li><li><p><span>Generic errors without actionable explanations.</span></p></li></ul><h2><span>11. Accessibility and responsiveness</span></h2><p><span>Follow WCAG 2.2 AA principles where applicable.</span></p><p><span>Verify:</span></p><ul><li><p><span>Sufficient text contrast.</span></p></li><li><p><span>Visible keyboard focus.</span></p></li><li><p><span>Keyboard-operable interactive elements.</span></p></li><li><p><span>Clear form labels.</span></p></li><li><p><span>Text alternatives for meaningful images.</span></p></li><li><p><span>Readable content at mobile widths.</span></p></li><li><p><span>Buttons and links with comfortable touch targets.</span></p></li><li><p><span>Error messages that explain what occurred.</span></p></li><li><p><span>Reduced-motion preferences when animation is used.</span></p></li></ul><p><span>Do not sacrifice usability for visual decoration.</span></p><h2><span>12. Implementation procedure</span></h2><p><span>When asked to design or modify a screen:</span></p><ol start="1"><li><p><span>Read the active feature specification.</span></p></li><li><p><span>Identify the user's role and primary task.</span></p></li><li><p><span>Apply the defined color tokens.</span></p></li><li><p><span>Use Playfair Display for editorial headings and Lato for functional content.</span></p></li><li><p><span>Apply the Senda Yoga layout and component rules.</span></p></li><li><p><span>Introduce decorative botanical elements only where appropriate.</span></p></li><li><p><span>Provide clear interaction feedback.</span></p></li><li><p><span>Validate mobile responsiveness and accessibility.</span></p></li><li><p><span>Verify that the interface accurately represents the underlying business state.</span></p></li><li><p><span>Report any design limitations or deviations.</span></p></li></ol><h2><span>13. Quality checklist</span></h2><p><span>Before completing an interface, verify:</span></p><ul><li><span><input></span><div><p><span>Correct warm brand palette.</span></p></div></li><li><span><input></span><div><p><span>Contemporary lowercase Senda logotype.</span></p></div></li><li><span><input></span><div><p><span>Playfair Display and Lato applied correctly.</span></p></div></li><li><span><input></span><div><p><span>Consistent spacing and card styling.</span></p></div></li><li><span><input></span><div><p><span>Accessible primary and secondary buttons.</span></p></div></li><li><span><input></span><div><p><span>Responsive mobile layout.</span></p></div></li><li><span><input></span><div><p><span>Package balances immediately understandable.</span></p></div></li><li><span><input></span><div><p><span>Botanical decoration does not distract.</span></p></div></li><li><span><input></span><div><p><span>All interface text is in Spanish.</span></p></div></li><li><span><input></span><div><p><span>Interactive elements have usable states.</span></p></div></li><li><span><input></span><div><p><span>No unimplemented functionality appears as an active control.</span></p></div></li><li><span><input></span><div><p><span>No feature business rules were modified for visual reasons.</span></p></div></li></ul><h2><span>14. Boundaries</span></h2><p><span>This skill defines visual identity, UI composition, typography, interactive component styling, and accessibility.</span></p><p><span>The feature specification remains authoritative for:</span></p><ul><li><p><span>Package balances.</span></p></li><li><p><span>Attendance deductions.</span></p></li><li><p><span>Authentication and authorization.</span></p></li><li><p><span>Corrections.</span></p></li><li><p><span>Session management.</span></p></li><li><p><span>Data persistence.</span></p></li><li><p><span>Acceptance criteria.</span></p></li></ul><p><span>Never alter these rules merely to accommodate a design preference.</span></p></body></html><!--EndFragment-->
-</body>
-</html>
+# Senda Yoga — Brand Design Skill
+
+## Purpose and usage
+
+Use this skill when creating or modifying Senda Yoga interfaces. Combine **the earthy colors of Tierra Serena**, **the clean contemporary lowercase wordmark of Equilibrio Moderno**, and **the editorial typography and composition of Esencia Artesanal**.
+
+The application should feel like a calm, welcoming boutique yoga studio while remaining precise and efficient for attendance management. This skill is about presentation; the feature specification governs business logic.
+
+## 1. Brand identity
+
+- Personality: warm, calm, trustworthy, contemporary, personal, and subtly artisanal.
+- Avoid generic fitness dashboards, heavy green fills, bright gradients, oversized hero imagery on operational screens, and decorative clutter.
+- Use the wordmark **senda** in lowercase in a clean, contemporary sans-serif style, with **YOGA STUDIO** in small, widely tracked capitals below it.
+- The wordmark should remain typographically distinct from editorial headings. If no official image/SVG asset exists, render a restrained text wordmark rather than inventing a complex logo. Do not claim that a typographic fallback is the official logo.
+
+## 2. Color tokens
+
+Define these tokens centrally, reusing them consistently:
+
+| Token | Value | Role |
+|---|---|---|
+| `--color-background` | `#F8F4EE` | Warm sand page background |
+| `--color-surface` | `#FFFDFC` | Warm white cards and dialogs |
+| `--color-sage` | `#A7B89F` | Subtle supporting accents |
+| `--color-terracotta` | `#C97F63` | Visual identity and progress |
+| `--color-mocha` | `#7A5E4D` | Warm secondary accents |
+| `--color-charcoal` | `#2E2E2B` | Main text and dark controls |
+| `--color-border` | `#E8DED2` | Delicate boundaries |
+| `--color-muted` | `#6B6863` | Secondary text |
+
+- Let sand and warm-white surfaces dominate; use terracotta deliberately, not everywhere.
+- Most functional text should be charcoal.
+- Avoid white text on the supplied terracotta without verifying contrast; select a darker contrast-compliant action variant or dark text as appropriate.
+- Provide distinct success, warning, and error states with text and icons; status must never rely on color alone.
+
+## 3. Typography
+
+- **Playfair Display:** editorial headings, greetings, selected branded statements; never dense tables, forms, labels, or operational status.
+- **Lato:** body copy, numerical balances, buttons, navigation, form labels, lists, error messages, and data views.
+- Responsive heading scale: desktop H1 36px, H2 28px, H3 22px; reduce as needed on mobile.
+- Body 16px; labels 14px; button text 15–16px; secondary information 14px (smaller only if comfortably readable).
+- Use tabular numbers where available for package counts. Provide sensible fallback fonts if web fonts cannot load.
+
+## 4. Layout and rhythm
+
+- Mobile first; retain adequate margins, especially on compact displays.
+- Use an 8px spacing scale: 8px tight gaps, 16px common gaps, 20–24px card padding, 24–32px section spacing, 40–48px for larger editorial separations.
+- Warm-white cards with 16–24px corner radii, subtle border, and almost imperceptible shadow when helpful.
+- Editorial headings may be slightly asymmetric with generous whitespace and an occasional botanical accent; forms, numbers, operational controls, and data lists must align consistently.
+- Student views: greeting → total available classes → individual packages/progress → history access.
+- Instructor views: session selection → student search/list → remaining balance → confirm attendance → visible feedback.
+- Administrator views: package/student management → sessions → attendance history → correction controls.
+- Mobile bottom navigation is appropriate for student screens, but only include implemented destinations. Use practical navigation for administrative flows.
+
+## 5. Buttons and interaction
+
+- Primary actions: warm terracotta visual language with **verified text contrast**, subtly organic but regular rounded rectangle (~14–18px radius), at least 44×44 CSS px touch target, Lato medium weight, and little or no shadow.
+- Secondary actions: warm-white or transparent surface, thin mocha or charcoal border, dark text, same radius family.
+- Tertiary actions: restrained text treatment.
+- Consistent hover, focus-visible, loading, disabled, success, and error states.
+- Do **not** use brush-stroke silhouettes or irregular hitboxes for attendance confirmations and other critical actions.
+- Prefer one obvious primary action per screen, with short Spanish labels.
+
+## 6. Signature components
+
+### Package card
+Show package identity, initial and remaining class counts, progress, and access to relevant attendance history. The numeric balance must be legible independently of color or graphics. Do not assume packages always contain ten classes.
+
+### Progress
+Use a circular or segmented progress treatment accented with terracotta, supported by explicit labels such as "8 de 10 clases". Handle arbitrary positive package sizes.
+
+### Organic detail
+Sparse line-art botanical and abstract natural motifs may decorate welcome headers, noncritical card corners, and empty states. Never put patterns behind balances, forms, navigation, or critical buttons.
+
+## 7. Language and accessible use
+
+- All user-facing copy is **Spanish**, warm and concise: "Hola, Mariana", "8 clases disponibles", "Registrar asistencia", "Asistencia confirmada", "Este registro fue corregido".
+- Avoid excessive punctuation, technical jargon, and vague errors such as "Error" without an explanation.
+- Meet WCAG 2.2 AA principles where applicable: text contrast, visible keyboard focus, labeled form controls, keyboard interaction, readable mobile layout, explanatory error states, alternatives for meaningful imagery, and respect for reduced-motion preferences.
+- Never sacrifice readability or task efficiency for decoration.
+
+## 8. Agent procedure
+
+1. Read `AGENTS.md` and the current feature spec.
+2. Identify the role, task, and critical information in each screen.
+3. Reuse color tokens, Playfair/Lato typography, spacing, and component patterns.
+4. Build mobile-first responsive states, including loading, empty, success, error, and disabled.
+5. Add organic artwork only where it supports the brand without obscuring information.
+6. Test responsive layout, color contrast, keyboard access, and functional clarity.
+7. Confirm visuals faithfully represent the actual persisted application data.
+8. Report any deviations and why they were necessary.
+
+## 9. Quality checklist
+
+- [ ] Earthy palette applied consistently through tokens.
+- [ ] Clean lowercase senda wordmark, with YOGA STUDIO descriptor.
+- [ ] Playfair Display used for editorial headings; Lato for functional content.
+- [ ] Warm-white cards and consistent spacing and corner radii.
+- [ ] Accessible action contrast and visible focus.
+- [ ] Clear balances and package-level progress.
+- [ ] Spanish copy; responsive mobile screens.
+- [ ] Artisanal details are subtle and never obscure controls.
+- [ ] No dead navigation links or misleading active controls.
+- [ ] No business rules changed for design reasons.
+
+## 10. Scope boundary
+
+This skill never overrides the spec on package quantities, deduction order, session validation, permissions, concurrency, persistence, or reversals.
