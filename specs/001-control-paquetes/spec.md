@@ -1,106 +1,91 @@
 # Feature Specification 001 — Package and Attendance Management
 
-**Status:** Draft for validation
+**Status:** Ready for implementation  
+**Product:** Senda Yoga  
+**Feature:** Digital class packages and attendance validation
 
-## 1. Problem definition
+## 1. Problem
 
-The yoga studio currently uses paper cards to track class packages. These cards can be lost, and students and instructors may disagree about the number of remaining classes.
-
-The studio needs a reliable way to register attendance, deduct classes from purchased packages, and allow students to verify their balances.
+The studio currently tracks class packages with paper cards, which can be lost and make attendance and remaining balances difficult to verify.
 
 ## 2. Goal
 
-Implement a digital class package and attendance management feature that maintains accurate balances, prevents duplicate deductions, and preserves an auditable history.
+Maintain independent class packages, deduct only confirmed attendance, prevent duplicate charges and negative balances, preserve corrections, and let students verify their own records.
 
-## 3. Users
+## 3. Roles
 
-- **Administrator:** Creates packages, manages records, and corrects attendance errors.
-- **Instructor:** Views the shared student directory and confirms attendance for authorized sessions.
-- **Student:** Views personal package balances and attendance history.
+- **Administrator:** Creates packages and sessions, may confirm attendance for any session, and may reverse incorrect attendance with a reason.
+- **Instructor:** Consults the shared student directory and balances; confirms attendance only for sessions assigned to them. Cannot create packages or reverse attendance.
+- **Student:** Consults only their own packages, balances, and attendance history; cannot modify records.
 
-## 4. Proposed solution
+## 4. Functional design
 
-### 4.1 Package management
+### 4.1 Packages
 
-- The administrator can assign a new package to a student.
-- The default package contains 10 classes.
-- The administrator can select a different positive integer as the package size.
-- Each package receives a unique identifier and creation timestamp.
-- Each package maintains its original class quantity and remaining balance.
-- Students may have multiple independent packages.
+- Each package belongs to exactly one student and has a unique ID, creation timestamp, original quantity, and remaining quantity.
+- Default quantity: **10 classes**; administrators can enter another positive integer.
+- Each acquisition creates a **separate package**; a student may own several.
+- Show both individual package balances and a total available balance.
+- Packages have **no expiration** in this MVP.
 
-### 4.2 Attendance registration
+### 4.2 Previously created sessions
 
-- Attendance must be linked to an identifiable class session.
-- The instructor or administrator selects a student and confirms their attendance.
-- The system checks whether the student has an available class balance.
-- If multiple packages are available, the system deducts one class from the oldest available package.
-- Successful confirmation reduces the selected package's balance by exactly one.
-- The system records the student, session, package, responsible user, and confirmation timestamp.
-- The application prevents duplicate active attendance records for the same student and session.
+- The administrator creates each session before attendance can be registered.
+- A session has a unique ID, title, scheduled start date/time, and assigned instructor.
+- Two sessions may occur on the same day; they are still distinct.
+- Attendance cannot be confirmed before the session's scheduled start.
+- Use the studio's configured time zone (default for this project: `America/Mexico_City`).
 
-### 4.3 Validation
+### 4.3 Attendance confirmation
 
-- Attendance cannot be confirmed without an available package balance.
-- Package balances cannot become negative.
-- An attendance confirmation must not deduct more than one class.
-- Simultaneous requests must not result in duplicate deductions or inconsistent balances.
-- Unauthorized users cannot modify attendance or package balances.
+- An authorized instructor or administrator selects an existing session and a student.
+- Check permissions, session start, available balance, and whether the student already has an active confirmed attendance for that session.
+- Deduct **exactly one class** from the oldest package with a positive balance, ordered by creation timestamp and then package ID (FIFO).
+- Persist student ID, session ID, charged package ID, authorizing user ID, and confirmation timestamp.
+- Deduction and attendance creation must be **atomic**: both succeed or neither succeeds.
+- Concurrent requests must not create duplicate active attendance records or allow balance below zero.
+- Booking a session does not deduct a class; reservations are outside this feature.
 
 ### 4.4 Corrections
 
-- Only the administrator can reverse an attendance record.
-- A correction must include a reason.
-- Reversing attendance restores one class to the original package.
-- The original record and correction remain available in the audit history.
-- An already reversed attendance record cannot be reversed again.
+- Only the administrator may reverse a confirmed attendance; a nonblank reason is mandatory.
+- Restore exactly one class to the **same package** originally charged.
+- Preserve the original attendance and append a correction record including reason, administrator, and timestamp.
+- Reject a repeated reversal of the same attendance record.
+- Once reversed, a new confirmation for the same student and session is allowed if all normal validation rules pass; retain the entire history.
 
-### 4.5 Student view
+### 4.5 Student consultation
 
-Students can consult:
+- Students can view their total balance, individual package original and remaining quantities, attendance history, and corrections affecting their packages.
+- Enforce student data isolation and authorization on the server, not just in the interface.
 
-- Their available class balance.
-- Individual package information.
-- Their attendance history.
-- Any recorded attendance corrections affecting their packages.
+## 5. Acceptance criteria (verifiable)
 
-Students cannot modify these records or access another student's information.
+**AC-01 — Package creation and consultation.** Given an administrator assigns a package to a student, when a valid positive integer is submitted, then create a separate package with equal original and remaining quantities; default to 10 if no custom quantity is provided. The student's total and package-level balances reflect the new record.
 
-## 5. Acceptance criteria
+**AC-02 — Authorized attendance with FIFO.** Given a previously created session has reached its scheduled start and an authorized instructor or administrator confirms a student with available classes, exactly one class is deducted from the oldest available package and a confirmation is saved with the student, session, charged package, actor, and timestamp.
 
-**AC-01 — Package creation**
+**AC-03 — Validation and consistency.** Given an unauthorized actor, a future session, insufficient balance, or an existing active attendance for the same student and session, confirmation is rejected without changing balances or creating an active attendance record. Concurrent requests cannot cause duplicate deductions or negative balances.
 
-Given an administrator creates a new package for a student, when the administrator confirms a valid positive integer quantity, then the system creates an independent package with that initial and remaining balance. When no custom quantity is provided, the default is 10 classes.
+**AC-04 — Auditable reversal.** Given a confirmed attendance, when the administrator reverses it with a nonblank reason, one class is restored to the originally charged package while both original and correction records remain available. A second reversal is rejected; a new otherwise-valid confirmation can be made.
 
-**AC-02 — Correct attendance deduction**
+**AC-05 — Private student records.** An authenticated student can view only their own packages, total balance, attendance, and related corrections; requests to view or modify other students' records are denied.
 
-Given a student has available classes, when an authorized instructor confirms attendance for a specific session, then exactly one class is deducted from the oldest package with available balance, and an attendance record is saved with the responsible user and timestamp.
+## 6. Example tests
 
-**AC-03 — Invalid or duplicate attendance**
+- Create packages with default 10 and custom 5; verify independent records and aggregated balance.
+- With balances 2 and 10, confirm attendance and verify the first becomes 1, the other stays 10, and the audit record identifies the charged package.
+- Reject duplicate student-session confirmation, zero balance, future session, and an unauthorized instructor.
+- Simulate simultaneous duplicate confirmations and verify no double deduction.
+- Reverse an attendance and verify the original package is restored, a reason and actor are logged, and repeated reversal is rejected.
+- Verify a student cannot read or change another student's records.
 
-Given a student has no available classes or already has an active attendance record for a session, when another confirmation is attempted, then the operation is rejected without changing package balances. Concurrent duplicate requests must not create multiple deductions.
+## 7. Out of scope
 
-**AC-04 — Auditable correction**
+Reservations, waiting lists, notifications, online payments, package expiration, recurring session generation, videos, and e-commerce.
 
-Given a previously confirmed attendance record, when the administrator reverses it with a reason, then one class is restored to the original package, the correction is logged, and the original attendance information remains available. A second reversal is rejected.
+## 8. Delivery evidence
 
-**AC-05 — Authorized access and consultation**
+Provide an executable application, documented local setup, fictitious seed data or demo accounts, automated tests mapped to AC-01 through AC-05, their actual execution results, and known limitations.
 
-Given an authenticated student, when the student accesses the application, then they can view only their own packages, available balances, and attendance history. They cannot modify those records or retrieve another student's records.
-
-## 6. Out of scope
-
-- Class reservations.
-- Waiting lists.
-- Automated notifications.
-- Payment processing.
-- Package expiration.
-- Video lessons and online store.
-
-## 7. Open decisions
-
-- Whether the administrator and instructors can confirm attendance for past or future sessions.
-- Whether corrected attendance can be registered again for the same student and session.
-- How class sessions will be created and identified in the initial implementation.
-
-These questions must be resolved before implementation.
+Do not claim tests passed unless they were executed successfully.
