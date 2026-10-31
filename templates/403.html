@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Acceso no permitido · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="empty-state card" aria-labelledby="forbidden-title">
+    <span class="empty-state__mark" aria-hidden="true">!</span>
+    <p class="eyebrow">Acceso restringido</p>
+    <h1 id="forbidden-title">Esta acción no está disponible para tu rol</h1>
+    <p>Tu sesión sigue activa. Puedes volver a las opciones que tienes autorizadas.</p>
+    {% if request.user.role == "ADMIN" or request.user.role == "INSTRUCTOR" %}
+        <a class="button button--secondary" href="{% url 'students:list' %}">Volver a alumnas</a>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Vincular cuenta · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="link-account-title">
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Acceso privado</p>
+            <h1 id="link-account-title">Vincular cuenta</h1>
+            <p>Selecciona la cuenta STUDENT que corresponde a {{ student.name }}.</p>
+        </div>
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        <div class="field">
+            <label for="{{ form.account.id_for_label }}">{{ form.account.label }}</label>
+            {{ form.account }}
+            {% if form.account.help_text %}<p class="help-text">{{ form.account.help_text }}</p>{% endif %}
+            {% for error in form.account.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'students:detail' student.pk %}">Cancelar</a>
+            <button class="button button--primary" type="submit">Vincular cuenta</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

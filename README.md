@@ -3,7 +3,7 @@
 
 Aplicación web para la administración de paquetes de clases y asistencias de un estudio de yoga. El proyecto se desarrolla de manera incremental siguiendo la especificación de la funcionalidad activa.
 
-Esta primera etapa contiene únicamente la base técnica: Django, PostgreSQL, autenticación con roles y estructura de pruebas. Todavía no incluye alumnas, paquetes, sesiones ni asistencias.
+La aplicación incluye la base técnica y el alcance de AC-01: registro de alumnas, creación de paquetes independientes y consulta de saldos. Todavía no incluye sesiones, asistencias ni reversiones.
 
 ## Requisitos
 
@@ -81,7 +81,27 @@ Las cuentas creadas mediante `createsuperuser` reciben automáticamente el rol `
 python manage.py runserver
 ```
 
-El panel técnico de Django estará disponible en `http://127.0.0.1:8000/admin/`. No es todavía la interfaz final de Senda Yoga.
+Abre `http://127.0.0.1:8000/ingresar/` para utilizar la interfaz de Senda Yoga. El panel técnico de Django permanece disponible en `http://127.0.0.1:8000/admin/`.
+
+### Pantallas disponibles
+
+- `/ingresar/`: inicio de sesión.
+- `/alumnas/`: directorio y saldos totales para administradoras e instructoras.
+- `/alumnas/nueva/`: registro de alumnas, exclusivo para administradoras.
+- `/alumnas/<id>/`: paquetes y saldo de una alumna.
+- `/alumnas/<id>/vincular-cuenta/`: vínculo con una cuenta STUDENT, exclusivo para administradoras.
+- `/alumnas/mi-cuenta/`: consulta privada de paquetes para la alumna autenticada.
+- `/paquetes/nuevo/`: asignación de paquetes, exclusiva para administradoras.
+
+### Cuenta ficticia de alumna para pruebas manuales
+
+Con `DJANGO_DEBUG=True`, identifica el ID de una alumna existente y ejecuta:
+
+```powershell
+python manage.py create_demo_student_account <id_alumna>
+```
+
+El comando solicita el nombre de usuario y la contraseña de forma interactiva. La contraseña no se muestra, no se recibe como argumento y no se guarda en archivos. El comando queda deshabilitado cuando `DEBUG=False`.
 
 ## Pruebas y comprobaciones
 
@@ -117,5 +137,9 @@ No agregues `.env`, credenciales ni datos personales reales al repositorio.
 - PostgreSQL como única base de datos de la aplicación.
 - Roles `ADMIN`, `INSTRUCTOR` y `STUDENT`.
 - Estructura inicial para pruebas con pytest.
+- Registro de alumnas sin cuenta de acceso obligatoria.
+- Paquetes independientes con cantidades positivas y saldo inicial equivalente.
+- Consulta de saldos individuales y saldo total agregado.
+- Portal privado de paquetes para cuentas STUDENT vinculadas.
 
-La implementación de alumnas, paquetes, sesiones, asistencias y correcciones pertenece a etapas posteriores.
+La implementación de sesiones, asistencias y correcciones pertenece a etapas posteriores.

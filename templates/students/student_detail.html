@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }} · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <a class="back-link" href="{% url 'students:list' %}"><span aria-hidden="true">←</span> Todas las alumnas</a>
+        <p class="eyebrow">Expediente de alumna</p>
+        <h1>{{ student.name }}</h1>
+        <p>{{ student.email|default:"Sin correo registrado" }}</p>
+    </div>
+    {% if request.user.role == "ADMIN" %}
+        <div class="heading-actions">
+            {% if not student.user_id %}
+                <a class="button button--secondary" href="{% url 'students:link-account' student.pk %}">Vincular cuenta</a>
+            {% endif %}
+            <a class="button button--primary" href="{% url 'packages:create' %}?student={{ student.pk }}">Asignar paquete</a>
+        </div>
+    {% endif %}
+</section>
+
+{% if request.user.role == "ADMIN" %}
+    <div class="account-status" role="status">
+        <strong>Acceso de alumna:</strong>
+        {% if student.user_id %}
+            <span>Cuenta vinculada</span>
+        {% else %}
+            <span>Sin cuenta vinculada</span>
+        {% endif %}
+    </div>
+{% endif %}
+
+<section class="balance-hero" aria-labelledby="balance-title">
+    <div>
+        <p class="eyebrow" id="balance-title">Saldo total</p>
+        <p class="balance-hero__number">{{ student.total_balance }}</p>
+        <p>clase{{ student.total_balance|pluralize }} disponible{{ student.total_balance|pluralize }}</p>
+    </div>
+    <div class="balance-hero__accent" aria-hidden="true"></div>
+</section>
+
+<section class="section-heading">
+    <div>
+        <p class="eyebrow">Registros independientes</p>
+        <h2>Paquetes</h2>
+    </div>
+</section>
+
+{% if student.packages.all %}
+    <div class="package-grid">
+        {% for package in student.packages.all %}
+            <article class="card package-card">
+                <div class="package-card__heading">
+                    <div>
+                        <p class="eyebrow">Paquete #{{ package.pk }}</p>
+                        <h3>{{ package.remaining_quantity }} de {{ package.original_quantity }} clases</h3>
+                    </div>
+                    <span class="status-pill">Disponible</span>
+                </div>
+                <progress value="{{ package.remaining_quantity }}" max="{{ package.original_quantity }}" aria-label="{{ package.remaining_quantity }} de {{ package.original_quantity }} clases disponibles"></progress>
+                <dl class="package-meta">
+                    <div>
+                        <dt>Creado</dt>
+                        <dd>{{ package.created_at|date:"j \d\e F \d\e Y" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Responsable</dt>
+                        <dd>{{ package.created_by.get_full_name|default:package.created_by.username }}</dd>
+                    </div>
+                </dl>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="empty-state card">
+        <h3>Esta alumna todavía no tiene paquetes</h3>
+        <p>Su saldo permanecerá en cero hasta que una administradora le asigne uno.</p>
+        {% if request.user.role == "ADMIN" %}
+            <a class="button button--primary" href="{% url 'packages:create' %}?student={{ student.pk }}">Asignar primer paquete</a>
+        {% endif %}
+    </section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% load static %}
+<!doctype html>
+<html lang="es-MX">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Administración de alumnas y paquetes de Senda Yoga">
+    <title>{% block title %}Senda Yoga{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/brand.css' %}">
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="wordmark" href="{% url 'home' %}" aria-label="Senda Yoga Studio, inicio">
+                <span class="wordmark__name">senda</span>
+                <span class="wordmark__descriptor">Yoga Studio</span>
+            </a>
+            {% if request.user.is_authenticated %}
+                <nav class="main-nav" aria-label="Navegación principal">
+                    {% if request.user.role == "ADMIN" or request.user.role == "INSTRUCTOR" %}
+                        <a href="{% url 'students:list' %}">Alumnas</a>
+                    {% endif %}
+                    {% if request.user.role == "ADMIN" %}
+                        <a href="{% url 'students:create' %}">Nueva alumna</a>
+                        <a href="{% url 'packages:create' %}">Asignar paquete</a>
+                    {% endif %}
+                    {% if request.user.role == "STUDENT" %}
+                        <a href="{% url 'students:portal' %}">Mis paquetes</a>
+                    {% endif %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="nav-button" type="submit">Cerrar sesión</button>
+                    </form>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main id="contenido" class="page-shell">
+        {% if messages %}
+            <div class="message-stack" aria-live="polite">
+                {% for message in messages %}
+                    <div class="message message--{{ message.tags|default:'info' }}">
+                        <span aria-hidden="true">✓</span>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

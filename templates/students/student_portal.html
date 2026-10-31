@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Mis paquetes · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="student-greeting">
+    <p class="eyebrow">Tu práctica en Senda</p>
+    <h1>Hola, {{ student.name }}</h1>
+    <p>Aquí puedes consultar tus clases disponibles y cada paquete por separado.</p>
+</section>
+
+<section class="balance-hero" aria-labelledby="private-balance-title">
+    <div>
+        <p class="eyebrow" id="private-balance-title">Clases disponibles</p>
+        <p class="balance-hero__number">{{ student.total_balance }}</p>
+        <p>clase{{ student.total_balance|pluralize }} en total</p>
+    </div>
+    <div class="balance-hero__accent" aria-hidden="true"></div>
+</section>
+
+<section class="section-heading">
+    <div>
+        <p class="eyebrow">Tus registros</p>
+        <h2>Paquetes</h2>
+    </div>
+</section>
+
+{% if student.packages.all %}
+    <div class="package-grid">
+        {% for package in student.packages.all %}
+            <article class="card package-card">
+                <div class="package-card__heading">
+                    <div>
+                        <p class="eyebrow">Paquete #{{ package.pk }}</p>
+                        <h3>{{ package.remaining_quantity }} de {{ package.original_quantity }} clases</h3>
+                    </div>
+                    <span class="status-pill">Disponible</span>
+                </div>
+                <progress value="{{ package.remaining_quantity }}" max="{{ package.original_quantity }}" aria-label="{{ package.remaining_quantity }} de {{ package.original_quantity }} clases disponibles"></progress>
+                <p class="muted">Adquirido el {{ package.created_at|date:"j \d\e F \d\e Y" }}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="empty-state card">
+        <span class="botanical-mark" aria-hidden="true">⌇</span>
+        <h3>Aún no tienes paquetes</h3>
+        <p>Cuando el estudio te asigne uno, aparecerá aquí con sus clases disponibles.</p>
+    </section>
+{% endif %}
+{% endblock %}

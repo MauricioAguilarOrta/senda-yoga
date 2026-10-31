@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar alumna · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="student-form-title">
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Directorio compartido</p>
+            <h1 id="student-form-title">Registrar alumna</h1>
+            <p>Solo necesitamos su nombre. El correo puede agregarse ahora o más adelante.</p>
+        </div>
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        <div class="field">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% for error in form.name.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }} <span class="optional">Opcional</span></label>
+            {{ form.email }}
+            {% if form.email.help_text %}<p class="help-text">{{ form.email.help_text }}</p>{% endif %}
+            {% for error in form.email.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'students:list' %}">Cancelar</a>
+            <button class="button button--primary" type="submit">Guardar alumna</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

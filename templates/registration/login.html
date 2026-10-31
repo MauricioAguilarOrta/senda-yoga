@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Ingresar · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="auth-layout" aria-labelledby="login-title">
+    <div class="auth-intro">
+        <p class="eyebrow">Gestión del estudio</p>
+        <h1 id="login-title">Bienvenida a Senda</h1>
+        <p>Consulta alumnas y mantén sus paquetes de clases en un solo lugar.</p>
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="form-errors" role="alert">
+                <p>No pudimos iniciar la sesión. Revisa tu usuario y contraseña.</p>
+            </div>
+        {% endif %}
+        <div class="field">
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            {{ form.username }}
+            {% for error in form.username.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            {{ form.password }}
+            {% for error in form.password.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+        <button class="button button--primary button--full" type="submit">Ingresar</button>
+    </form>
+</section>
+{% endblock %}

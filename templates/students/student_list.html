@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Alumnas · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Directorio compartido</p>
+        <h1>Alumnas</h1>
+        <p>Consulta el saldo disponible de cada alumna y el detalle de sus paquetes.</p>
+    </div>
+    {% if request.user.role == "ADMIN" %}
+        <a class="button button--primary" href="{% url 'students:create' %}">Registrar alumna</a>
+    {% endif %}
+</section>
+
+{% if students %}
+    <div class="student-grid">
+        {% for student in students %}
+            <article class="card student-card">
+                <div>
+                    <p class="eyebrow">Alumna</p>
+                    <h2>{{ student.name }}</h2>
+                    <p class="muted">{{ student.email|default:"Sin correo registrado" }}</p>
+                </div>
+                <div class="balance-block">
+                    <strong>{{ student.available_balance }}</strong>
+                    <span>clase{{ student.available_balance|pluralize }} disponible{{ student.available_balance|pluralize }}</span>
+                </div>
+                <a class="text-link" href="{% url 'students:detail' student.pk %}">Ver paquetes <span aria-hidden="true">→</span></a>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="empty-state card">
+        <span class="botanical-mark" aria-hidden="true">⌇</span>
+        <h2>Aún no hay alumnas registradas</h2>
+        <p>Cuando registres la primera alumna, aparecerá aquí con su saldo disponible.</p>
+        {% if request.user.role == "ADMIN" %}
+            <a class="button button--primary" href="{% url 'students:create' %}">Registrar primera alumna</a>
+        {% endif %}
+    </section>
+{% endif %}
+{% endblock %}

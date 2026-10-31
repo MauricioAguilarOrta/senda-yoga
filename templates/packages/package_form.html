@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Asignar paquete · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="package-form-title">
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Nuevo registro independiente</p>
+            <h1 id="package-form-title">Asignar paquete</h1>
+            <p>La cantidad original y el saldo inicial serán iguales.</p>
+        </div>
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        <div class="field">
+            <label for="{{ form.student.id_for_label }}">{{ form.student.label }}</label>
+            {{ form.student }}
+            {% for error in form.student.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+            {{ form.quantity }}
+            {% if form.quantity.help_text %}<p class="help-text">{{ form.quantity.help_text }}</p>{% endif %}
+            {% for error in form.quantity.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'students:list' %}">Cancelar</a>
+            <button class="button button--primary" type="submit">Asignar paquete</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
