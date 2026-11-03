@@ -94,6 +94,8 @@ Abre `http://127.0.0.1:8000/ingresar/` para utilizar la interfaz de Senda Yoga. 
 - `/paquetes/nuevo/`: asignación de paquetes, exclusiva para administradoras.
 - `/sesiones/`: consulta de sesiones para administradoras e instructoras.
 - `/sesiones/nueva/`: registro de sesiones, exclusivo para administradoras.
+- `/sesiones/<id>/`: detalle y asistencias confirmadas de una sesión.
+- `/sesiones/<id>/confirmar-asistencia/`: confirmación de asistencia para la administradora o la instructora asignada.
 
 ### Cuenta ficticia de alumna para pruebas manuales
 
@@ -144,5 +146,6 @@ No agregues `.env`, credenciales ni datos personales reales al repositorio.
 - Consulta de saldos individuales y saldo total agregado.
 - Portal privado de paquetes para cuentas STUDENT vinculadas.
 - Registro y consulta de sesiones previamente creadas.
+- Confirmación atómica de asistencias con descuento FIFO y protección frente a duplicados.
 
-La implementación de asistencias y correcciones pertenece a etapas posteriores.
+La implementación de reversiones y correcciones de asistencias pertenece a etapas posteriores.

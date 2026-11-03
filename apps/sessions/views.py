@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
+from apps.attendances.models import Attendance
 
 from .forms import YogaSessionCreationForm
 from .models import YogaSession
@@ -37,3 +38,28 @@ def yoga_session_create(request):
         )
         return redirect("yoga_sessions:list")
     return render(request, "sessions/session_form.html", {"form": form})
+
+
+@role_required(User.Role.ADMIN, User.Role.INSTRUCTOR)
+def yoga_session_detail(request, pk):
+    yoga_session = get_object_or_404(
+        YogaSession.objects.select_related("instructor", "created_by"),
+        pk=pk,
+    )
+    attendances = Attendance.objects.filter(
+        session=yoga_session,
+        is_active=True,
+    ).select_related("student", "charged_package", "confirmed_by")
+    can_confirm = request.user.role == User.Role.ADMIN or (
+        request.user.role == User.Role.INSTRUCTOR
+        and request.user.pk == yoga_session.instructor_id
+    )
+    return render(
+        request,
+        "sessions/session_detail.html",
+        {
+            "yoga_session": yoga_session,
+            "attendances": attendances,
+            "can_confirm": can_confirm,
+        },
+    )

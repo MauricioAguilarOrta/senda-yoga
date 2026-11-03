@@ -290,7 +290,8 @@ p {
 
 .student-grid,
 .package-grid,
-.session-list {
+.session-list,
+.attendance-list {
     display: grid;
     gap: 16px;
 }
@@ -350,6 +351,64 @@ p {
 .session-meta dd {
     margin: 0;
     font-size: 15px;
+}
+
+.session-card .text-link {
+    display: inline-block;
+    margin-top: 18px;
+}
+
+.attendance-card {
+    display: grid;
+    gap: 20px;
+}
+
+.attendance-card h3 {
+    font-size: 1.2rem;
+}
+
+.attendance-meta {
+    display: grid;
+    margin: 0;
+    gap: 12px;
+}
+
+.attendance-meta div {
+    display: grid;
+    gap: 3px;
+}
+
+.attendance-meta dt {
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
+.attendance-meta dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.notice,
+.confirmation-note {
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.notice {
+    margin-bottom: 16px;
+    border: 1px solid var(--color-mocha);
+    color: var(--color-charcoal);
+    background: #f6eee3;
+    line-height: 1.5;
+}
+
+.confirmation-note {
+    border: 1px solid var(--color-sage);
+    background: var(--color-success-surface);
+}
+
+.confirmation-note p {
+    margin: 4px 0 0;
 }
 
 .student-card {
@@ -598,7 +657,8 @@ progress::-moz-progress-bar {
 
     .student-grid,
     .package-grid,
-    .session-list {
+    .session-list,
+    .attendance-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 

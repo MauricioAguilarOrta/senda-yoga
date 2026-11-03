@@ -35,6 +35,7 @@
                             <dd>{{ yoga_session.instructor.get_full_name|default:yoga_session.instructor.username }}</dd>
                         </div>
                     </dl>
+                    <a class="text-link" href="{% url 'yoga_sessions:detail' yoga_session.pk %}">Ver sesión <span aria-hidden="true">→</span></a>
                 </div>
             </article>
         {% endfor %}

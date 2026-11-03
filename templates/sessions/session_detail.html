@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ yoga_session.title }} · Senda Yoga{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% url 'yoga_sessions:list' %}">← Volver a sesiones</a>
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Sesión #{{ yoga_session.pk }}</p>
+        <h1>{{ yoga_session.title }}</h1>
+        <p>{{ yoga_session.scheduled_start|date:"j \d\e F \d\e Y, H:i" }} · {{ yoga_session.instructor.get_full_name|default:yoga_session.instructor.username }}</p>
+    </div>
+    {% if can_confirm %}
+        <a class="button button--primary" href="{% url 'yoga_sessions:confirm-attendance' yoga_session.pk %}">Confirmar asistencia</a>
+    {% endif %}
+</section>
+
+<section class="section-heading">
+    <p class="eyebrow">Registro de la sesión</p>
+    <h2>Asistencias confirmadas</h2>
+</section>
+
+{% if attendances %}
+    <div class="attendance-list">
+        {% for attendance in attendances %}
+            <article class="card attendance-card">
+                <div>
+                    <p class="eyebrow">Asistencia #{{ attendance.pk }}</p>
+                    <h3>{{ attendance.student.name }}</h3>
+                    <p>Confirmada el {{ attendance.confirmed_at|date:"j \d\e F \d\e Y, H:i" }}</p>
+                </div>
+                <dl class="attendance-meta">
+                    <div>
+                        <dt>Paquete descontado</dt>
+                        <dd>#{{ attendance.charged_package_id }}</dd>
+                    </div>
+                    <div>
+                        <dt>Confirmada por</dt>
+                        <dd>{{ attendance.confirmed_by.get_full_name|default:attendance.confirmed_by.username }}</dd>
+                    </div>
+                </dl>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="empty-state card">
+        <span class="botanical-mark" aria-hidden="true">⌇</span>
+        <h3>Aún no hay asistencias confirmadas</h3>
+        <p>Cuando se confirme una asistencia real, aparecerá aquí con el paquete descontado.</p>
+    </section>
+{% endif %}
+{% endblock %}
