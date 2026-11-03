@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar sesión · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="session-form-title">
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Agenda del estudio</p>
+            <h1 id="session-form-title">Registrar sesión</h1>
+            <p>Programa una práctica y asigna la instructora que estará a cargo.</p>
+        </div>
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="form-errors" role="alert">
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+        {% for field in form %}
+            <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<p class="help-text">{{ field.help_text }}</p>{% endif %}
+                {% for error in field.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'yoga_sessions:list' %}">Cancelar</a>
+            <button class="button button--primary" type="submit">Guardar sesión</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

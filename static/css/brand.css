@@ -289,9 +289,67 @@ p {
 }
 
 .student-grid,
-.package-grid {
+.package-grid,
+.session-list {
     display: grid;
     gap: 16px;
+}
+
+.session-card {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.session-card__date {
+    display: grid;
+    min-height: 72px;
+    padding: 10px 8px;
+    place-items: center;
+    border: 1px solid var(--color-sage);
+    border-radius: 16px;
+    background: var(--color-background);
+    font-variant-numeric: tabular-nums;
+}
+
+.session-card__date span {
+    color: var(--color-mocha);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.session-card__date strong {
+    font-size: 1.65rem;
+    line-height: 1;
+}
+
+.session-card__content h2 {
+    font-family: "Lato", "Segoe UI", sans-serif;
+    font-size: 1.3rem;
+}
+
+.session-meta {
+    display: grid;
+    margin: 16px 0 0;
+    gap: 12px;
+}
+
+.session-meta div {
+    display: grid;
+    gap: 3px;
+}
+
+.session-meta dt {
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
+.session-meta dd {
+    margin: 0;
+    font-size: 15px;
 }
 
 .student-card {
@@ -539,7 +597,8 @@ progress::-moz-progress-bar {
     }
 
     .student-grid,
-    .package-grid {
+    .package-grid,
+    .session-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -579,6 +638,12 @@ progress::-moz-progress-bar {
 
     .balance-hero__accent {
         right: -100px;
+    }
+
+    .session-card {
+        grid-template-columns: 56px minmax(0, 1fr);
+        padding: 20px;
+        gap: 16px;
     }
 }
 

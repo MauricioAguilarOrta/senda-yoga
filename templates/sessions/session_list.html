@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Sesiones · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Agenda del estudio</p>
+        <h1>Sesiones</h1>
+        <p>Consulta las clases programadas y la instructora responsable de cada práctica.</p>
+    </div>
+    {% if request.user.role == "ADMIN" %}
+        <a class="button button--primary" href="{% url 'yoga_sessions:create' %}">Registrar sesión</a>
+    {% endif %}
+</section>
+
+{% if yoga_sessions %}
+    <div class="session-list">
+        {% for yoga_session in yoga_sessions %}
+            <article class="card session-card">
+                <div class="session-card__date" aria-label="{{ yoga_session.scheduled_start|date:'j \d\e F \d\e Y, H:i' }}">
+                    <span>{{ yoga_session.scheduled_start|date:"M" }}</span>
+                    <strong>{{ yoga_session.scheduled_start|date:"j" }}</strong>
+                </div>
+                <div class="session-card__content">
+                    <p class="eyebrow">Sesión #{{ yoga_session.pk }}</p>
+                    <h2>{{ yoga_session.title }}</h2>
+                    <dl class="session-meta">
+                        <div>
+                            <dt>Inicio</dt>
+                            <dd>{{ yoga_session.scheduled_start|date:"j \d\e F \d\e Y, H:i" }}</dd>
+                        </div>
+                        <div>
+                            <dt>Instructora</dt>
+                            <dd>{{ yoga_session.instructor.get_full_name|default:yoga_session.instructor.username }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="empty-state card">
+        <span class="botanical-mark" aria-hidden="true">⌇</span>
+        <h2>Aún no hay sesiones registradas</h2>
+        <p>Las sesiones aparecerán aquí cuando una administradora programe la primera práctica.</p>
+        {% if request.user.role == "ADMIN" %}
+            <a class="button button--primary" href="{% url 'yoga_sessions:create' %}">Registrar primera sesión</a>
+        {% endif %}
+    </section>
+{% endif %}
+{% endblock %}

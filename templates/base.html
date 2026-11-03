@@ -23,6 +23,7 @@
                 <nav class="main-nav" aria-label="Navegación principal">
                     {% if request.user.role == "ADMIN" or request.user.role == "INSTRUCTOR" %}
                         <a href="{% url 'students:list' %}">Alumnas</a>
+                        <a href="{% url 'yoga_sessions:list' %}">Sesiones</a>
                     {% endif %}
                     {% if request.user.role == "ADMIN" %}
                         <a href="{% url 'students:create' %}">Nueva alumna</a>
