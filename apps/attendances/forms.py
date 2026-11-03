@@ -29,3 +29,23 @@ class AttendanceConfirmationForm(forms.Form):
                 output_field=IntegerField(),
             )
         ).order_by("name", "id")
+
+
+class AttendanceReversalForm(forms.Form):
+    reason = forms.CharField(
+        label="Razón de la reversión",
+        max_length=500,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 4,
+                "placeholder": "Describe brevemente por qué se corrige la asistencia.",
+            }
+        ),
+        help_text="La razón quedará guardada en el historial de auditoría.",
+    )
+
+    def clean_reason(self):
+        reason = self.cleaned_data["reason"].strip()
+        if not reason:
+            raise forms.ValidationError("Escribe la razón de la reversión.")
+        return reason

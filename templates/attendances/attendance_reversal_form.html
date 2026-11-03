@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Revertir asistencia · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="reversal-form-title">
+    <a class="back-link" href="{% url 'yoga_sessions:detail' attendance.session_id %}">← Volver a la sesión</a>
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Corrección administrativa</p>
+            <h1 id="reversal-form-title">Revertir asistencia</h1>
+            <p>{{ attendance.student.name }} · {{ attendance.session.title }}</p>
+        </div>
+    </div>
+    <div class="notice notice--warning" role="status">
+        Se devolverá exactamente una clase al paquete #{{ attendance.charged_package_id }}. La asistencia original permanecerá en el historial como corregida.
+    </div>
+    <form class="card form-card" method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="form-errors" role="alert">
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+        <div class="field">
+            <label for="{{ form.reason.id_for_label }}">{{ form.reason.label }}</label>
+            {{ form.reason }}
+            {% if form.reason.help_text %}<p class="help-text">{{ form.reason.help_text }}</p>{% endif %}
+            {% for error in form.reason.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'yoga_sessions:detail' attendance.session_id %}">Cancelar</a>
+            <button class="button button--danger" type="submit">Revertir y devolver clase</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

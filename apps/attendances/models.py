@@ -61,3 +61,38 @@ class Attendance(models.Model):
             raise ValidationError(
                 {"charged_package": "El paquete debe pertenecer a la alumna."}
             )
+
+
+class AttendanceReversal(models.Model):
+    attendance = models.OneToOneField(
+        Attendance,
+        on_delete=models.PROTECT,
+        related_name="reversal",
+        verbose_name="asistencia original",
+    )
+    reason = models.TextField("razón")
+    reversed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="attendance_reversals",
+        limit_choices_to={"role": "ADMIN"},
+        verbose_name="revertida por",
+    )
+    reversed_at = models.DateTimeField("fecha de reversión", auto_now_add=True)
+
+    class Meta:
+        ordering = ("reversed_at", "id")
+        verbose_name = "reversión de asistencia"
+        verbose_name_plural = "reversiones de asistencia"
+
+    def __str__(self):
+        return f"Reversión de asistencia #{self.attendance_id}"
+
+    def clean(self):
+        super().clean()
+        if not self.reason or not self.reason.strip():
+            raise ValidationError({"reason": "Escribe la razón de la reversión."})
+        if self.reversed_by_id and self.reversed_by.role != "ADMIN":
+            raise ValidationError(
+                {"reversed_by": "Solo una administradora puede revertir asistencias."}
+            )

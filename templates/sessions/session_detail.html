@@ -28,6 +28,11 @@
                     <p class="eyebrow">Asistencia #{{ attendance.pk }}</p>
                     <h3>{{ attendance.student.name }}</h3>
                     <p>Confirmada el {{ attendance.confirmed_at|date:"j \d\e F \d\e Y, H:i" }}</p>
+                    {% if attendance.is_active %}
+                        <span class="status-pill">Activa</span>
+                    {% else %}
+                        <span class="status-pill status-pill--reversed">Corregida</span>
+                    {% endif %}
                 </div>
                 <dl class="attendance-meta">
                     <div>
@@ -39,6 +44,15 @@
                         <dd>{{ attendance.confirmed_by.get_full_name|default:attendance.confirmed_by.username }}</dd>
                     </div>
                 </dl>
+                {% if attendance.reversal %}
+                    <div class="correction-record">
+                        <strong>Este registro fue corregido</strong>
+                        <p>{{ attendance.reversal.reason }}</p>
+                        <span>Por {{ attendance.reversal.reversed_by.get_full_name|default:attendance.reversal.reversed_by.username }}, el {{ attendance.reversal.reversed_at|date:"j \d\e F \d\e Y, H:i" }}</span>
+                    </div>
+                {% elif request.user.role == "ADMIN" %}
+                    <a class="button button--danger" href="{% url 'yoga_sessions:reverse-attendance' yoga_session.pk attendance.pk %}">Revertir asistencia</a>
+                {% endif %}
             </article>
         {% endfor %}
     </div>

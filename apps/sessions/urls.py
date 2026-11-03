@@ -16,4 +16,9 @@ urlpatterns = [
         attendance_views.attendance_confirm,
         name="confirm-attendance",
     ),
+    path(
+        "<int:session_id>/asistencias/<int:attendance_id>/revertir/",
+        attendance_views.attendance_reverse,
+        name="reverse-attendance",
+    ),
 ]

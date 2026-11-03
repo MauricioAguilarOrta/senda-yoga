@@ -3,7 +3,7 @@
 
 Aplicación web para la administración de paquetes de clases y asistencias de un estudio de yoga. El proyecto se desarrolla de manera incremental siguiendo la especificación de la funcionalidad activa.
 
-La aplicación incluye la base técnica y el alcance de AC-01: registro de alumnas, creación de paquetes independientes y consulta de saldos. Todavía no incluye sesiones, asistencias ni reversiones.
+La aplicación incluye la base técnica, la gestión de alumnas y paquetes, sesiones previamente creadas, confirmación de asistencias y reversiones administrativas auditables.
 
 ## Requisitos
 
@@ -96,6 +96,7 @@ Abre `http://127.0.0.1:8000/ingresar/` para utilizar la interfaz de Senda Yoga. 
 - `/sesiones/nueva/`: registro de sesiones, exclusivo para administradoras.
 - `/sesiones/<id>/`: detalle y asistencias confirmadas de una sesión.
 - `/sesiones/<id>/confirmar-asistencia/`: confirmación de asistencia para la administradora o la instructora asignada.
+- `/sesiones/<id>/asistencias/<asistencia_id>/revertir/`: reversión administrativa con razón obligatoria.
 
 ### Cuenta ficticia de alumna para pruebas manuales
 
@@ -147,5 +148,6 @@ No agregues `.env`, credenciales ni datos personales reales al repositorio.
 - Portal privado de paquetes para cuentas STUDENT vinculadas.
 - Registro y consulta de sesiones previamente creadas.
 - Confirmación atómica de asistencias con descuento FIFO y protección frente a duplicados.
+- Reversión auditable de asistencias al paquete originalmente descontado.
 
-La implementación de reversiones y correcciones de asistencias pertenece a etapas posteriores.
+La consulta privada del historial completo de asistencias y correcciones pertenece a una etapa posterior.

@@ -46,10 +46,13 @@ def yoga_session_detail(request, pk):
         YogaSession.objects.select_related("instructor", "created_by"),
         pk=pk,
     )
-    attendances = Attendance.objects.filter(
-        session=yoga_session,
-        is_active=True,
-    ).select_related("student", "charged_package", "confirmed_by")
+    attendances = Attendance.objects.filter(session=yoga_session).select_related(
+        "student",
+        "charged_package",
+        "confirmed_by",
+        "reversal",
+        "reversal__reversed_by",
+    )
     can_confirm = request.user.role == User.Role.ADMIN or (
         request.user.role == User.Role.INSTRUCTOR
         and request.user.pk == yoga_session.instructor_id
