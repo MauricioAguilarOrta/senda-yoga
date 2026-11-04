@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -7,9 +7,13 @@ from django.urls import reverse
 from django.utils import timezone
 
 from apps.accounts.models import User
+from apps.attendances.models import Attendance, AttendanceReversal
+from apps.attendances.services import confirm_attendance, reverse_attendance
+from apps.packages.services import create_package
 from apps.sessions.forms import YogaSessionCreationForm
 from apps.sessions.models import YogaSession
 from apps.sessions.services import create_yoga_session
+from apps.students.models import Student
 
 
 def create_user(username, role, *, is_active=True):
@@ -201,3 +205,114 @@ def test_student_cannot_consult_session_directory(client):
     response = client.get(reverse("yoga_sessions:list"))
 
     assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_session_without_attendances_can_change_start_and_instructor():
+    administrator = create_user("admin_sesion_editable", User.Role.ADMIN)
+    original_instructor = create_user(
+        "instructora_sesion_editable", User.Role.INSTRUCTOR
+    )
+    replacement_instructor = create_user(
+        "instructora_reemplazo_editable", User.Role.INSTRUCTOR
+    )
+    yoga_session = create_yoga_session(
+        title="Sesión ficticia editable",
+        scheduled_start=timezone.now() + timedelta(days=1),
+        instructor=original_instructor,
+        administrator=administrator,
+    )
+    new_start = timezone.now() + timedelta(days=2)
+
+    yoga_session.scheduled_start = new_start
+    yoga_session.instructor = replacement_instructor
+    yoga_session.save()
+
+    yoga_session.refresh_from_db()
+    assert yoga_session.scheduled_start == new_start
+    assert yoga_session.instructor == replacement_instructor
+
+
+@pytest.mark.django_db
+def test_active_attendance_prevents_session_start_and_instructor_changes():
+    administrator = create_user("admin_sesion_bloqueada", User.Role.ADMIN)
+    instructor = create_user("instructora_sesion_bloqueada", User.Role.INSTRUCTOR)
+    replacement_instructor = create_user(
+        "instructora_reemplazo_bloqueada", User.Role.INSTRUCTOR
+    )
+    student = Student.objects.create(name="Alumna Ficticia Inmutable")
+    create_package(student=student, quantity=2, administrator=administrator)
+    yoga_session = create_yoga_session(
+        title="Sesión ficticia con asistencia",
+        scheduled_start=timezone.now() - timedelta(hours=2),
+        instructor=instructor,
+        administrator=administrator,
+    )
+    attendance = confirm_attendance(
+        student=student,
+        yoga_session=yoga_session,
+        actor=instructor,
+    )
+    original_start = yoga_session.scheduled_start
+
+    yoga_session.scheduled_start = original_start - timedelta(days=1)
+    with pytest.raises(ValidationError) as start_error:
+        yoga_session.save()
+    assert "scheduled_start" in start_error.value.message_dict
+
+    yoga_session.refresh_from_db()
+    yoga_session.instructor = replacement_instructor
+    with pytest.raises(ValidationError) as instructor_error:
+        yoga_session.save()
+    assert "instructor" in instructor_error.value.message_dict
+
+    yoga_session.refresh_from_db()
+    attendance.refresh_from_db()
+    assert yoga_session.scheduled_start == original_start
+    assert yoga_session.instructor == instructor
+    assert attendance.is_active is True
+    assert Attendance.objects.filter(session=yoga_session).count() == 1
+
+
+@pytest.mark.django_db
+def test_reversed_attendance_keeps_session_start_and_instructor_immutable():
+    administrator = create_user("admin_sesion_corregida", User.Role.ADMIN)
+    instructor = create_user("instructora_sesion_corregida", User.Role.INSTRUCTOR)
+    replacement_instructor = create_user(
+        "instructora_reemplazo_corregida", User.Role.INSTRUCTOR
+    )
+    student = Student.objects.create(name="Alumna Ficticia Histórica")
+    create_package(student=student, quantity=2, administrator=administrator)
+    yoga_session = create_yoga_session(
+        title="Sesión ficticia con corrección",
+        scheduled_start=timezone.now() - timedelta(hours=2),
+        instructor=instructor,
+        administrator=administrator,
+    )
+    attendance = confirm_attendance(
+        student=student,
+        yoga_session=yoga_session,
+        actor=instructor,
+    )
+    reversal = reverse_attendance(
+        attendance=attendance,
+        reason="Corrección ficticia para probar la inmutabilidad",
+        actor=administrator,
+    )
+    original_start = yoga_session.scheduled_start
+
+    yoga_session.scheduled_start = original_start - timedelta(days=1)
+    yoga_session.instructor = replacement_instructor
+    with pytest.raises(ValidationError) as error:
+        yoga_session.save()
+
+    yoga_session.refresh_from_db()
+    attendance.refresh_from_db()
+    reversal.refresh_from_db()
+    assert set(error.value.message_dict) == {"scheduled_start", "instructor"}
+    assert yoga_session.scheduled_start == original_start
+    assert yoga_session.instructor == instructor
+    assert attendance.is_active is False
+    assert reversal.attendance == attendance
+    assert Attendance.objects.filter(session=yoga_session).count() == 1
+    assert AttendanceReversal.objects.filter(attendance=attendance).count() == 1
