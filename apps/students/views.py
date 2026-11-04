@@ -2,9 +2,11 @@ from django.contrib import messages
 from django.db.models import IntegerField, Prefetch, Sum
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_GET
 
 from apps.accounts.models import User
 from apps.accounts.permissions import role_required
+from apps.attendances.models import Attendance
 from apps.packages.models import Package
 
 from .forms import StudentAccountLinkForm, StudentRegistrationForm
@@ -66,6 +68,7 @@ def student_account_link(request, pk):
 
 
 @role_required(User.Role.STUDENT)
+@require_GET
 def student_portal(request):
     packages = Package.objects.order_by("created_at", "id")
     student = (
@@ -75,4 +78,37 @@ def student_portal(request):
     )
     if student is None:
         return render(request, "students/student_portal_missing.html", status=404)
-    return render(request, "students/student_portal.html", {"student": student})
+    attendances = (
+        Attendance.objects.filter(student=student)
+        .select_related(
+            "session",
+            "charged_package",
+            "reversal",
+        )
+        .order_by("-confirmed_at", "-id")
+    )
+    return render(
+        request,
+        "students/student_portal.html",
+        {"student": student, "attendances": attendances},
+    )
+
+
+@role_required(User.Role.STUDENT)
+@require_GET
+def private_attendance_detail(request, attendance_id):
+    attendance = get_object_or_404(
+        Attendance.objects.select_related(
+            "student",
+            "session",
+            "charged_package",
+            "reversal",
+        ),
+        pk=attendance_id,
+        student__user=request.user,
+    )
+    return render(
+        request,
+        "students/private_attendance_detail.html",
+        {"attendance": attendance},
+    )

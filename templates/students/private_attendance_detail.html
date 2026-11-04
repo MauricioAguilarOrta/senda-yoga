@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de asistencia · Senda Yoga{% endblock %}
+
+{% block content %}
+<section class="narrow-layout" aria-labelledby="private-attendance-title">
+    <a class="back-link" href="{% url 'students:portal' %}">← Volver a mi práctica</a>
+    <div class="page-heading page-heading--compact">
+        <div>
+            <p class="eyebrow">Tu historial</p>
+            <h1 id="private-attendance-title">{{ attendance.session.title }}</h1>
+            <p>Asistencia #{{ attendance.pk }}</p>
+        </div>
+    </div>
+
+    <article class="card attendance-card">
+        <div class="package-card__heading">
+            <h2>Información de la asistencia</h2>
+            {% if attendance.is_active %}
+                <span class="status-pill">Confirmada</span>
+            {% else %}
+                <span class="status-pill status-pill--reversed">Corregida</span>
+            {% endif %}
+        </div>
+        <dl class="attendance-meta">
+            <div>
+                <dt>Fecha de la sesión</dt>
+                <dd>{{ attendance.session.scheduled_start|date:"j \d\e F \d\e Y, H:i" }}</dd>
+            </div>
+            <div>
+                <dt>Confirmada el</dt>
+                <dd>{{ attendance.confirmed_at|date:"j \d\e F \d\e Y, H:i" }}</dd>
+            </div>
+            <div>
+                <dt>Paquete utilizado</dt>
+                <dd>#{{ attendance.charged_package_id }}</dd>
+            </div>
+        </dl>
+        {% if attendance.reversal %}
+            <div class="correction-record">
+                <strong>Este registro fue corregido</strong>
+                <p>{{ attendance.reversal.reason }}</p>
+                <span>Corrección registrada el {{ attendance.reversal.reversed_at|date:"j \d\e F \d\e Y, H:i" }}. La clase fue devuelta al mismo paquete.</span>
+            </div>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

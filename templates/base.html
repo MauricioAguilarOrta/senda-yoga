@@ -30,7 +30,7 @@
                         <a href="{% url 'packages:create' %}">Asignar paquete</a>
                     {% endif %}
                     {% if request.user.role == "STUDENT" %}
-                        <a href="{% url 'students:portal' %}">Mis paquetes</a>
+                        <a href="{% url 'students:portal' %}">Mi práctica</a>
                     {% endif %}
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
